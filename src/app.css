@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.logs {
+    max-height: calc(100vh - 400px);
+    overflow-y: auto;
+}
+
+.modal-box, .dropdown-content {
+    @apply border border-base-300 bg-base-200;
+}
+
+.btn {
+    @apply font-normal;
+}
+
+.btn-md {
+    @apply min-h-10 h-10;
+}
+
+.btn-outline {
+    @apply border-2;
+}
+
+.input, .textarea, .select {
+    @apply border-2;
+}
+
+.max-screen-nav {
+    max-height: calc(100vh - 65.8px);
+}
