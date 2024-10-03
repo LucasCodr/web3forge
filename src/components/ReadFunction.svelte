@@ -22,7 +22,6 @@
 
 	async function call() {
 		logCall({
-			logPrefix: '👀',
 			logClass: 'text-warning',
 			log: `${abiFunction.name}(${args.join(', ')}) at ${$contractsByAddress?.[contractAddress] ? $contractsByAddress?.[contractAddress].name : contractAddress}`
 		});
@@ -51,7 +50,6 @@
 				});
 
 				logCall({
-					logPrefix: '🚀',
 					logClass: 'text-info',
 					log: `Transaction sent: ${tx}. Waiting for confirmation...`
 				});
@@ -60,7 +58,6 @@
 					hash: tx,
 					onReplaced: (newHash) => {
 						logCall({
-							logPrefix: '🔄',
 							logClass: 'text-info',
 							log: `Transaction replaced: ${newHash}`
 						});
@@ -68,7 +65,6 @@
 				});
 
 				return logCall({
-					logPrefix: '🎉',
 					logClass: 'text-success',
 					log: `Transaction confirmed: ${JSON.stringify(
 						deserialize(serialize(data), replacer),
@@ -95,7 +91,6 @@
 			}
 
 			logCall({
-				logPrefix: '😍',
 				logClass: 'text-success',
 				log: `Result: ${response} ${typeof data}`
 			});
@@ -105,7 +100,6 @@
 			consola.error(error);
 
 			logCall({
-				logPrefix: '🚨',
 				logClass: 'text-error',
 				log: error.shortMessage
 			});

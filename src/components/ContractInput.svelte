@@ -3,6 +3,7 @@
 		chainId,
 		type Contract,
 		contracts,
+		contractsByAddress,
 		SpecialLog
 	} from '$lib/store/state';
 	import { logCall } from '$lib/store/actions';
@@ -19,7 +20,6 @@
 				logCall({
 					log: `The selected contract is set to chain ${chain?.chainId}.`,
 					logClass: 'text-warning',
-					logPrefix: '🔄',
 					code: SpecialLog.SWITCH_NETWORK,
 					meta: {
 						chainId: `${chain?.chainId}`
@@ -44,7 +44,9 @@
 	<ul
 		tabindex="0"
 		role="menu"
-		class="menu dropdown-content z-10 w-full rounded-box border border-neutral bg-base-300 p-2 shadow"
+		class={!Object.keys($contractsByAddress).length
+			? 'hidden'
+			: 'menu dropdown-content z-10 w-full rounded-box border border-neutral bg-base-300 p-2 shadow'}
 	>
 		{#each Object.keys($contracts) as type}
 			{#if $contracts[type].chains.length}

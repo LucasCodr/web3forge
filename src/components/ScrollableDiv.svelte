@@ -1,20 +1,23 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { contractCalls } from '$lib/store/state';
 
-	let element: HTMLDivElement;
+	let div: HTMLDivElement;
 
-	onMount(() => {
-		const observer = new ResizeObserver((entries) => {
-			for (let entry of entries) {
-				const { width, height } = entry.contentRect;
-				console.log(width, height);
-			}
-		});
-
-		observer.observe(element);
-	});
+	$: {
+		if ($contractCalls.length) {
+			setTimeout(() => {
+				div.scrollTo({
+					top: div.scrollHeight,
+					behavior: 'smooth'
+				});
+			}, 50);
+		}
+	}
 </script>
 
-<div bind:this={element} class="flex flex-1 flex-col p-4">
+<div
+	bind:this={div}
+	class="sticky top-20 flex max-h-[calc(100vh-80px)] flex-1 flex-col overflow-scroll"
+>
 	<slot />
 </div>

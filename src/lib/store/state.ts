@@ -9,7 +9,6 @@ export enum SpecialLog {
 interface BaseLog {
 	log: string;
 	logClass: string;
-	logPrefix: string;
 }
 
 // Extension for log entries that include a code

@@ -12,6 +12,19 @@ export default {
 		extend: {
 			maxHeight: {
 				logs: 'calc(100% - 96px)'
+			},
+			keyframes: {
+				pop: {
+					'0%': {
+						backgroundColor: '#ffffff30'
+					},
+					'100%': {
+						backgroundColor: 'initial'
+					}
+				}
+			},
+			animation: {
+				pop: 'pop 1s ease-in-out forwards'
 			}
 		}
 	},

@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { account, contractCalls, contracts, SpecialLog } from '$lib/store/state';
+	import {
+		account,
+		contractCalls,
+		contracts,
+		SpecialLog
+	} from '$lib/store/state';
 	import { wagmiConfig } from '$lib/wagmi-config';
 	import { reconnect, switchChain } from '@wagmi/core';
 	import { logCall } from '$lib/store/actions';
@@ -37,8 +42,7 @@
 		if ($account) {
 			logCall({
 				log: `Connected as ${$account}`,
-				logClass: 'text-success',
-				logPrefix: '🎉'
+				logClass: 'text-success'
 			});
 		}
 	}
@@ -50,8 +54,7 @@
 
 		logCall({
 			log: 'Connecting wallet...',
-			logClass: 'text-info',
-			logPrefix: '🕒'
+			logClass: 'text-info'
 		});
 
 		const connection = await reconnect(wagmiConfig);
@@ -59,8 +62,7 @@
 		if (!connection.length) {
 			logCall({
 				log: 'Please, connect your wallet.',
-				logClass: 'text-error',
-				logPrefix: '💀'
+				logClass: 'text-error'
 			});
 		}
 
@@ -92,7 +94,7 @@
 {/if}
 
 <div class="relative grid grid-cols-2">
-	<div class="p-4">
+	<div class="border-r border-neutral p-4">
 		<div class="mb-4">
 			<div class="flex space-x-4">
 				<ContractInput bind:value={contract} />
@@ -134,8 +136,8 @@
 
 		<div class="flex w-full flex-col space-y-4 pb-12">
 			{#each $contracts[abi].abi.filter((fn) => (search ? fn?.name
-				?.toLowerCase()
-				?.includes(search.toLowerCase()) : true)) as method}
+							?.toLowerCase()
+							?.includes(search.toLowerCase()) : true)) as method}
 				{#if method.type === 'function'}
 					<div class="collapse collapse-arrow border border-neutral">
 						<input type="radio" name="my-accordion-2" />
@@ -155,50 +157,29 @@
 		</div>
 	</div>
 
-	<div
-		class="sticky top-0 flex flex-col justify-between border-l border-neutral"
-	>
-		<div class="flex h-full flex-col">
-			<ScrollableDiv>
-				{#each $contractCalls as call}
-					<span
-						class={`${call.logClass} border-b border-neutral py-1 font-mono`}
+	<ScrollableDiv>
+		{#each $contractCalls as call}
+			<span
+				class={`${call.logClass} animate-pop border-b border-neutral px-4 py-1 font-mono`}
+			>
+				{#if call.code === SpecialLog.SWITCH_NETWORK}
+					{call.log} - Do you want to
+					<button
+						class="btn btn-outline btn-warning btn-xs"
+						on:click={() => {
+							if (call?.meta?.chainId) {
+								void switchChain(wagmiConfig, {
+									chainId: +call.meta.chainId
+								});
+							}
+						}}
 					>
-						{#if call.code === SpecialLog.SWITCH_NETWORK}
-							{call.log} - Do you want to
-							<button
-								class="btn btn-outline btn-warning btn-xs"
-								on:click={() => {
-									if (call?.meta?.chainId) {
-										void switchChain(wagmiConfig, {
-											chainId: +call.meta.chainId
-										});
-									}
-								}}
-							>
-								switch network?
-							</button>
-						{:else}
-							{call.log}
-						{/if}
-					</span>
-				{/each}
-			</ScrollableDiv>
-		</div>
-	</div>
-	<!--<div class="mockup-code h-fit sticky m-4 top-4">-->
-	<!--	<pre data-prefix="🙏" class="px-5"><code>Buenos dias!</code></pre>-->
-	<!--	{#each $contractCalls as call}-->
-	<!--		<pre-->
-	<!--			transition:blur|global={{ amount: 10 }}-->
-	<!--			data-prefix={call.logPrefix}-->
-	<!--			class={'px-5 ' + call.logClass}><code>{call.log}</code></pre>-->
-	<!--	{/each}-->
-
-	<!--	{#if !$account}-->
-	<!--		<pre data-prefix="💀" class="text-info px-5"><code-->
-	<!--				>Please, <button on:click={connectAccount} class="btn btn-xs btn-accent">Connect</button-->
-	<!--				> your wallet. </code></pre>-->
-	<!--	{/if}-->
-	<!--</div>-->
+						switch network?
+					</button>
+				{:else}
+					{call.log}
+				{/if}
+			</span>
+		{/each}
+	</ScrollableDiv>
 </div>
